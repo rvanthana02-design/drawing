@@ -3,223 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neumorphic Calculator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Dynamic Cyber Canvas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Light Theme Colors */
-            --bg-light: #e0e5ec;
-            --shadow-light-1: rgba(255, 255, 255, 0.7);
-            --shadow-light-2: rgba(163, 177, 198, 0.7);
-            --text-light: #444;
-            --accent: #378ADD;
-        }
-
-        .dark-theme {
-            /* Dark Theme Colors */
-            --bg-light: #2d3436;
-            --shadow-light-1: rgba(255, 255, 255, 0.05);
-            --shadow-light-2: rgba(0, 0, 0, 0.5);
-            --text-light: #dfe6e9;
+            --neon-cyan: #00f2ff;
+            --neon-purple: #7000ff;
+            --bg-dark: #0a0a0f;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-light);
+            font-family: 'Orbitron', sans-serif;
+            background: var(--bg-dark);
             height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.4s ease;
+            flex-direction: column;
+            overflow: hidden;
+            color: white;
         }
 
-        .calc-container {
-            width: 320px;
-            padding: 25px;
-            background: var(--bg-light);
-            border-radius: 30px;
-            box-shadow: 9px 9px 16px var(--shadow-light-2), 
-                        -9px -9px 16px var(--shadow-light-1);
-        }
-
-        /* Theme Toggle Switch */
-        .theme-toggle {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-        }
-
-        .toggle-btn {
-            width: 50px;
-            height: 25px;
-            background: var(--bg-light);
-            border-radius: 15px;
-            box-shadow: inset 2px 2px 5px var(--shadow-light-2), 
-                        inset -2px -2px 5px var(--shadow-light-1);
-            position: relative;
-            cursor: pointer;
-        }
-
-        .toggle-circle {
-            width: 21px;
-            height: 21px;
-            background: var(--accent);
-            border-radius: 50%;
+        /* Toolbar Styles */
+        .toolbar {
             position: absolute;
-            top: 2px;
-            left: 2px;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .tool-group { display: flex; align-items: center; gap: 10px; }
+
+        label { font-size: 10px; text-transform: uppercase; color: var(--neon-cyan); }
+
+        input[type="color"] {
+            border: none;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            background: none;
+        }
+
+        input[type="range"] { cursor: pointer; accent-color: var(--neon-cyan); }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
             transition: 0.3s;
         }
 
-        .dark-theme .toggle-circle {
-            transform: translateX(25px);
-            background: #f1c40f;
+        .btn:hover {
+            background: var(--neon-cyan);
+            color: black;
+            box-shadow: 0 0 15px var(--neon-cyan);
         }
 
-        /* Screen Display */
-        #display {
-            width: 100%;
-            height: 60px;
-            background: var(--bg-light);
-            border: none;
-            border-radius: 10px;
-            box-shadow: inset 6px 6px 12px var(--shadow-light-2), 
-                        inset -6px -6px 12px var(--shadow-light-1);
-            margin-bottom: 25px;
-            text-align: right;
-            padding: 0 15px;
-            font-size: 24px;
-            color: var(--text-light);
-            outline: none;
-        }
-
-        /* Buttons Grid */
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-
-        button {
-            width: 55px;
-            height: 55px;
-            background: var(--bg-light);
-            border: none;
-            border-radius: 50%;
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--text-light);
-            box-shadow: 5px 5px 10px var(--shadow-light-2), 
-                        -5px -5px 10px var(--shadow-light-1);
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        button:active {
-            box-shadow: inset 3px 3px 6px var(--shadow-light-2), 
-                        inset -3px -3px 6px var(--shadow-light-1);
-            transform: scale(0.95);
-        }
-
-        .operator { color: var(--accent); font-weight: 600; }
-        .clear { color: #e74c3c; }
-        .equal {
-            grid-column: span 2;
-            width: 125px;
-            border-radius: 30px;
-            background: var(--accent);
+        .btn.active {
+            background: var(--neon-purple);
+            border-color: var(--neon-purple);
             color: white;
         }
+
+        /* Canvas Container */
+        #canvasContainer {
+            flex-grow: 1;
+            width: 100vw;
+            height: 100vh;
+            cursor: crosshair;
+        }
+
+        canvas { display: block; }
     </style>
 </head>
 <body>
 
-    <div class="calc-container">
-        <div class="theme-toggle">
-            <div class="toggle-btn" onclick="toggleTheme()">
-                <div class="toggle-circle"></div>
-            </div>
+    <div class="toolbar">
+        <div class="tool-group">
+            <label>Color</label>
+            <input type="color" id="colorPicker" value="#00f2ff">
         </div>
 
-        <input type="text" id="display" readonly value="0">
+        <div class="tool-group">
+            <label>Size</label>
+            <input type="range" id="sizeSlider" min="1" max="50" value="5">
+        </div>
 
-        <div class="buttons">
-            <button class="clear" onclick="clearDisplay()">C</button>
-            <button class="operator" onclick="appendValue('/')">/</button>
-            <button class="operator" onclick="appendValue('*')">×</button>
-            <button class="operator" onclick="deleteLast()">⌫</button>
-            
-            <button onclick="appendValue('7')">7</button>
-            <button onclick="appendValue('8')">8</button>
-            <button onclick="appendValue('9')">9</button>
-            <button class="operator" onclick="appendValue('-')">-</button>
-            
-            <button onclick="appendValue('4')">4</button>
-            <button onclick="appendValue('5')">5</button>
-            <button onclick="appendValue('6')">6</button>
-            <button class="operator" onclick="appendValue('+')">+</button>
-            
-            <button onclick="appendValue('1')">1</button>
-            <button onclick="appendValue('2')">2</button>
-            <button onclick="appendValue('3')">3</button>
-            <button onclick="appendValue('.')">.</button>
-            
-            <button onclick="appendValue('0')">0</button>
-            <button class="equal" onclick="calculate()">=</button>
+        <div class="tool-group">
+            <button class="btn" id="neonBtn" onclick="toggleNeon()">Neon Off</button>
+            <button class="btn" onclick="clearCanvas()">Clear</button>
+            <button class="btn" onclick="saveCanvas()">Save PNG</button>
         </div>
     </div>
 
+    <div id="canvasContainer">
+        <canvas id="mainCanvas"></canvas>
+    </div>
+
     <script>
-        const display = document.getElementById('display');
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d');
+        const colorPicker = document.getElementById('colorPicker');
+        const sizeSlider = document.getElementById('sizeSlider');
+        const neonBtn = document.getElementById('neonBtn');
 
-        function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
+        let painting = false;
+        let isNeon = false;
+
+        // Resize Canvas to fit screen
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            // Set initial background
+            ctx.fillStyle = '#0a0a0f';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
 
-        function appendValue(val) {
-            if (display.value === '0') {
-                display.value = val;
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Drawing Logic
+        function startPosition(e) {
+            painting = true;
+            draw(e);
+        }
+
+        function finishedPosition() {
+            painting = false;
+            ctx.beginPath(); // Resets path so lines don't connect
+        }
+
+        function draw(e) {
+            if (!painting) return;
+
+            ctx.lineWidth = sizeSlider.value;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = colorPicker.value;
+
+            // Neon Effect Configuration
+            if (isNeon) {
+                ctx.shadowBlur = sizeSlider.value;
+                ctx.shadowColor = colorPicker.value;
             } else {
-                display.value += val;
+                ctx.shadowBlur = 0;
+            }
+
+            // Support for mouse and touch
+            const x = e.clientX || e.touches[0].clientX;
+            const y = e.clientY || e.touches[0].clientY;
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        // Event Listeners
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mouseup', finishedPosition);
+        canvas.addEventListener('mousemove', draw);
+
+        // Touch support for mobile
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPosition(e); });
+        canvas.addEventListener('touchend', finishedPosition);
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+
+        // Tool Functions
+        function toggleNeon() {
+            isNeon = !isNeon;
+            neonBtn.innerText = isNeon ? "Neon On" : "Neon Off";
+            neonBtn.classList.toggle('active');
+        }
+
+        function clearCanvas() {
+            if(confirm("Wipe the canvas?")) {
+                ctx.fillStyle = '#0a0a0f';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
         }
 
-        function clearDisplay() {
-            display.value = '0';
+        function saveCanvas() {
+            const link = document.createElement('a');
+            link.download = 'cyber-drawing.png';
+            link.href = canvas.toDataURL();
+            link.click();
         }
-
-        function deleteLast() {
-            display.value = display.value.slice(0, -1);
-            if (display.value === '') display.value = '0';
-        }
-
-        function calculate() {
-            try {
-                // Using eval safely for a simple calculator
-                display.value = eval(display.value.replace('×', '*'));
-            } catch (error) {
-                display.value = "Error";
-                setTimeout(clearDisplay, 1500);
-            }
-        }
-
-        // Add keyboard support
-        document.addEventListener('keydown', (e) => {
-            if (e.key >= 0 && e.key <= 9) appendValue(e.key);
-            if (e.key === '+') appendValue('+');
-            if (e.key === '-') appendValue('-');
-            if (e.key === '*') appendValue('*');
-            if (e.key === '/') appendValue('/');
-            if (e.key === '.') appendValue('.');
-            if (e.key === 'Enter') calculate();
-            if (e.key === 'Backspace') deleteLast();
-            if (e.key === 'Escape') clearDisplay();
-        });
     </script>
 </body>
 </html>
